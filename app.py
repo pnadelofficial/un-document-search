@@ -7,7 +7,7 @@ from simple_search.utils import reset_pages, get_data
 
 st.title('UN Document Search Search')
 
-# get_data()
+get_data()
 
 if 'page_count' not in st.session_state:
     st.session_state['page_count'] = 0
