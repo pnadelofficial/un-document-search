@@ -11,7 +11,7 @@ def get_data():
     urllib.request.urlretrieve("https://tufts.box.com/shared/static/2q5ivxwmbyypz8yrjmpe1oyr89bbqvj7.csv", "un_data_final_chunks.csv")
     urllib.request.urlretrieve("https://tufts.box.com/shared/static/l1ux7ue4191migrq5l8dqxfayfycexa5.zip", "un_doc_search.zip")
     with ZipFile('un_doc_search.zip', 'r') as zip_ref:
-        zip_ref.extractall('indexdir')
+        zip_ref.extractall('.')
     # if not os.listdir('data'):
     #     urllib.request.urlretrieve("https://tufts.box.com/shared/static/t9cpmf2e57cwz0rtkbjew4usnopg78rd.csv", "data/chunked_press_review.csv") # need to update
 
