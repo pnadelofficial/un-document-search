@@ -1,6 +1,7 @@
 import streamlit as st
 import urllib.request
 from zipfile import ZipFile
+import os
 
 def reset_pages():
     st.session_state['page_count'] = 0
@@ -22,13 +23,13 @@ def get_data():
     #     # copy the index files to the correct directory
     #     # os.rename('indices/press_review_index/indices/press_review_index', 'indices/press_review_index/')
         
-    #     print("**DEBUG**")
-    #     print("Current Working Directory", os.getcwd())
-    #     print("indices")
-    #     print(os.listdir('indices'))
-    #     print("hepc_index")
-    #     print(os.listdir('indices/press_review_index'))
-    #     print("hepc_index/indices")
-    #     print(os.listdir('indices/press_review_index/indices'))
-    #     print("data")
-    #     print(os.listdir('data'))
+    print("**DEBUG**")
+    print("Current Working Directory", os.getcwd())
+    print("indices")
+    print(os.listdir('indices'))
+    print("hepc_index")
+    print(os.listdir('indices/press_review_index'))
+    print("hepc_index/indices")
+    print(os.listdir('indices/press_review_index/indices'))
+    print("data")
+    print(os.listdir('data'))
