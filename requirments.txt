@@ -1,0 +1,5 @@
+fpdf2==2.7.5
+gspread
+pandas
+streamlit
+Whoosh
