@@ -1,0 +1,10 @@
+/.streamlit
+*.json
+output.png
+*.zip
+*ipynb
+*.csv 
+*.xlsx
+/data
+*.pdf
+/indexdir
