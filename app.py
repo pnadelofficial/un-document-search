@@ -6,6 +6,7 @@ from simple_search.dataloader import DataLoader
 from simple_search.utils import reset_pages, get_data
 
 st.title('UN Document Search Search')
+st.set_page_config(page_title=None, page_icon=None, layout="centered", initial_sidebar_state="expanded", menu_items=None)
 
 get_data()
 
