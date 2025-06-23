@@ -56,6 +56,7 @@ class Page:
         keys = list(r.keys())
         # title
         st.markdown(f"<small><b>Document topic: {r['topic']}</b></small>", unsafe_allow_html=True)
+        st.markdown(f"<small><b>Document origin: {r['doc_type']}</b></small>", unsafe_allow_html=True)
         
         # date
         if display_date and ('date' in keys) and (re.match('\d', str(r['date']))): 

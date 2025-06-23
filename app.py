@@ -29,6 +29,8 @@ with st.expander('Click for further information on how to construct a query.'):
     * If you'd like to search in a specific date range, you can specify it with the date: field. For example, dates:[20210101 TO 20220101] Ukraine would return results between January 1st, 2021 and January 1st, 2022 that have Ukraine in them.
     """)
 
+doc_type = st.radio('Choose a newspaper type', ['All', 'Security Council text', 'Meeting text'], on_change=reset_pages)
+
 dataloader = DataLoader()
 
 data, _ = dataloader.load()
@@ -39,5 +41,11 @@ to_see = st.number_input('How many results would you like to see per page?', min
 stemmer = st.toggle('Use stemming', help='If selected, the search will use stemming to find words with the same root. For example, "running" will match "run" and "ran".', on_change=reset_pages)
 
 if query_str != '':
-    searcher = Searcher(query_str, dataloader, stemmer, added_default_context=default_context)
+
+    if doc_type == "Security Council text":
+        doc_type = 'Security Council'
+    elif doc_type == "Meeting text":
+        doc_type = 'Meeting'
+
+    searcher = Searcher(query_str, dataloader, stemmer, doc_type=doc_type, added_default_context=default_context)
     searcher.search(to_see)

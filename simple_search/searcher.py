@@ -14,13 +14,12 @@ def load_google_sheet():
     return gc.open('simple-search-feedback').sheet1 # gmail account
 
 class Searcher:
-    def __init__(self, query_str:str, dataloader:DataLoader, stemmer:bool, newspaper_type:str='All', newspapers:list=[], added_default_context:int=0) -> None:
+    def __init__(self, query_str:str, dataloader:DataLoader, stemmer:bool, doc_type:str='All', added_default_context:int=0) -> None:
         self.query_str = query_str
         self.dataloader = dataloader
         self.data, self.ix, = self.dataloader.load()
         self.stemmer = stemmer
-        self.newspaper_type = newspaper_type
-        self.newspapers = newspapers
+        self.doc_type = doc_type
         self.added_default_context = added_default_context
     
     def parse_query(self):
@@ -28,9 +27,14 @@ class Searcher:
             parser = QueryParser("chunk", self.ix.schema, termclass=query.Variations)
         else:
             parser = QueryParser("chunk", self.ix.schema)    
+        
+        if self.doc_type != 'All':
+            doc_prepend = f"doc_type:[{self.doc_type}]"
+            self.query_str = f"{doc_prepend} {self.query_str}"
         q = parser.parse(self.query_str)
         all_tokens = list(set(self.query_str.split(' ') + [item for sublist in [variations(t) for t in self.query_str.split(' ')] for item in sublist]))
         searches = [q.lower() for q in all_tokens if (q != 'AND') and (q != 'OR') and (q != 'NOT') and (q != 'TO')]
+        
         return q, searches
 
     def search(self, to_see):
