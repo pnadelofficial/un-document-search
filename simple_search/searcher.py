@@ -24,6 +24,7 @@ class Searcher:
     
     def parse_query(self):
         if self.stemmer: 
+            print("Using stemming")
             parser = QueryParser("chunk", self.ix.schema, termclass=query.Variations)
         else:
             parser = QueryParser("chunk", self.ix.schema)    
@@ -32,8 +33,8 @@ class Searcher:
             doc_prepend = f"doc_type:[{self.doc_type}]"
             self.query_str = f"{doc_prepend} {self.query_str}"
         q = parser.parse(self.query_str)
-        all_tokens = list(set(self.query_str.split(' ') + [item for sublist in [variations(t) for t in self.query_str.split(' ')] for item in sublist]))
-        searches = [q.lower() for q in all_tokens if (q != 'AND') and (q != 'OR') and (q != 'NOT') and (q != 'TO')]
+        # all_tokens = list(set(self.query_str.split(' ') + [item for sublist in [variations(t) for t in self.query_str.split(' ')] for item in sublist]))
+        searches = [q.lower() for q in self.query_str.split() if (q != 'AND') and (q != 'OR') and (q != 'NOT') and (q != 'TO')]
         
         return q, searches
 
