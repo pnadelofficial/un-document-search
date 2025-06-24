@@ -43,7 +43,8 @@ class Exporter:
             page = st.session_state['pages'][st.session_state['page_count']]
             additional_context_dict = {}
             for i in range(len(page)):
-                if (page[i]['chunks'] != st.session_state['additional_context'][i]) or (not st.session_state['additional_context'][i] == ''):
+                print(page[i])
+                if (page[i]['chunk'] != st.session_state['additional_context'][i]) or (not st.session_state['additional_context'][i] == ''):
                     additional_context_dict[i] = {'text':st.session_state['additional_context'][i]} | {k:page[i][k] for k in page[i].keys() if k != 'text'} 
                 else:
                     additional_context_dict[i] = {k:page[i][k] for k in page[i].keys()}           
