@@ -43,7 +43,6 @@ class Exporter:
             page = st.session_state['pages'][st.session_state['page_count']]
             additional_context_dict = {}
             for i in range(len(page)):
-                print(page[i])
                 if (page[i]['chunk'] != st.session_state['additional_context'][i]) or (not st.session_state['additional_context'][i] == ''):
                     additional_context_dict[i] = {'text':st.session_state['additional_context'][i]} | {k:page[i][k] for k in page[i].keys() if k != 'text'} 
                 else:
@@ -53,7 +52,7 @@ class Exporter:
                 self.pdf.set_font('DejaVu', 'B', 12)
                 topic = r['topic']
                 self.pdf.multi_cell(self.col_width, self.row_height*self.spacing, f"Topic: {topic}", 0, ln=2)
-                self.pdf.multi_cell(self.col_width, self.row_height*self.spacing, f"Date: {datetime.strftime(r['date'], '%B %-d, %Y')}", 0, ln=2)
+                self.pdf.multi_cell(self.col_width, self.row_height*self.spacing, f"Date: {r['date']}", 0, ln=2)
                 self.pdf.set_font('DejaVu', '', 14)
                 self.pdf.multi_cell(self.col_width, self.row_height*self.spacing, text, 'B', ln=2)
                 self.pdf.ln(self.row_height * self.spacing)
