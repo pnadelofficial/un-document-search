@@ -38,6 +38,10 @@ dataloader = DataLoader()
 data, _ = dataloader.load()
 
 query_str = st.text_input('Search for a word or phrase', on_change=reset_pages)
+start_date = st.date_input("Start date", value=None, min_value="2000-01-01", max_value="2026-01-01")
+end_date = st.date_input("End date", value=None, min_value="2000-01-01", max_value="2026-01-01")
+topics = st.multiselect('Select topics', options=data.topics.unique().tolist())
+
 default_context = st.number_input('How many sentences of context would you like to see by default?', min_value=0, max_value=10, value=0, step=1, help='This number represents the amount of sentences to be added before and after the result.', on_change=reset_pages)
 to_see = st.number_input('How many results would you like to see per page?', min_value=1, max_value=100, value=10, step=1)
 stemmer = st.toggle('Use stemming', help='If selected, the search will use stemming to find words with the same root. For example, "running" will match "run" and "ran".', on_change=reset_pages)
@@ -49,5 +53,14 @@ if query_str != '':
     elif doc_type == "Meeting text":
         doc_type = 'Meeting'
 
-    searcher = Searcher(query_str, dataloader, stemmer, doc_type=doc_type, added_default_context=default_context)
+    searcher = Searcher(
+        query_str, 
+        dataloader, 
+        stemmer, 
+        doc_type=doc_type,
+        start_date=start_date,
+        end_date=end_date,
+        topic=topics,
+        added_default_context=default_context
+    )
     searcher.search(to_see)

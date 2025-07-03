@@ -1,6 +1,5 @@
 import streamlit as st
 from whoosh.qparser import QueryParser, query
-from whoosh.lang.morph_en import variations
 from datetime import datetime
 import gspread
 from simple_search.exporter import Exporter
@@ -14,12 +13,15 @@ def load_google_sheet():
     return gc.open('simple-search-feedback').sheet1 # gmail account
 
 class Searcher:
-    def __init__(self, query_str:str, dataloader:DataLoader, stemmer:bool, doc_type:str='All', added_default_context:int=0) -> None:
+    def __init__(self, query_str:str, dataloader:DataLoader, stemmer:bool, doc_type:str='All', start_date=None, end_date=None, topic=None, added_default_context:int=0) -> None:
         self.query_str = query_str
         self.dataloader = dataloader
         self.data, self.ix, = self.dataloader.load()
         self.stemmer = stemmer
         self.doc_type = doc_type
+        self.start_date = start_date
+        self.end_date = end_date
+        self.topic = topic
         self.added_default_context = added_default_context
     
     def parse_query(self):
@@ -31,7 +33,18 @@ class Searcher:
         
         if self.doc_type != 'All':
             doc_prepend = f"doc_type:[{self.doc_type}]"
-            self.query_str = f"{doc_prepend} {self.query_str}"
+            self.query_str = f"{doc_prepend} AND {self.query_str}"
+        if self.start_date and self.end_date:
+            date_prepend = f"date:[{self.start_date.strftime('%Y%m%d')} TO {self.end_date.strftime('%Y%m%d')}]"
+            self.query_str = f"{date_prepend} AND {self.query_str}"
+        if self.topic:
+            if isinstance(self.topic, list):
+                topics_str = ' OR '.join([f'topic:"{t}"' for t in self.topic])
+                topic_prepend = f'topic:({topics_str})'
+            else:
+                topic_prepend = f'topic:"{self.topic}"'
+            self.query_str = f"{topic_prepend} AND {self.query_str}"
+        print(f"Query string: {self.query_str}")
         q = parser.parse(self.query_str)
         # all_tokens = list(set(self.query_str.split(' ') + [item for sublist in [variations(t) for t in self.query_str.split(' ')] for item in sublist]))
         searches = [q.lower() for q in self.query_str.split() if (q != 'AND') and (q != 'OR') and (q != 'NOT') and (q != 'TO')]
