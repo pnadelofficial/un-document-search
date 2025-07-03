@@ -46,7 +46,7 @@ default_context = st.number_input('How many sentences of context would you like 
 to_see = st.number_input('How many results would you like to see per page?', min_value=1, max_value=100, value=10, step=1)
 stemmer = st.toggle('Use stemming', help='If selected, the search will use stemming to find words with the same root. For example, "running" will match "run" and "ran".', on_change=reset_pages)
 
-if query_str != '':
+if st.button('Search', key='search'):
 
     if doc_type == "Security Council text":
         doc_type = 'Security Council'
