@@ -45,19 +45,20 @@ default_context = st.number_input('How many sentences of context would you like 
 to_see = st.number_input('How many results would you like to see per page?', min_value=1, max_value=100, value=10, step=1)
 stemmer = st.toggle('Use stemming', help='If selected, the search will use stemming to find words with the same root. For example, "running" will match "run" and "ran".', on_change=reset_pages)
 
-if doc_type == "Security Council text":
-    doc_type = 'Security Council'
-elif doc_type == "Meeting text":
-    doc_type = 'Meeting'
+if query_str != '':
+    if doc_type == "Security Council text":
+        doc_type = 'Security Council'
+    elif doc_type == "Meeting text":
+        doc_type = 'Meeting'
 
-searcher = Searcher(
-    query_str, 
-    dataloader, 
-    stemmer, 
-    doc_type=doc_type,
-    start_date=start_date,
-    end_date=end_date,
-    topic=topics,
-    added_default_context=default_context
-)
-searcher.search(to_see)
+    searcher = Searcher(
+        query_str, 
+        dataloader, 
+        stemmer, 
+        doc_type=doc_type,
+        start_date=start_date,
+        end_date=end_date,
+        topic=topics,
+        added_default_context=default_context
+    )
+    searcher.search(to_see)
